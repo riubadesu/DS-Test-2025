@@ -28,7 +28,7 @@ task1/
 
 ### 1. Clone the Repository (If Using Git)
 ```sh
-git clone https://github.com/yourusername/mnist-classification.git
+git clone https://github.com/riubadesu/DS-Test-2025.git
 cd mnist-classification/task1
 ```
 
