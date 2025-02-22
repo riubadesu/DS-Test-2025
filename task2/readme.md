@@ -57,13 +57,6 @@ False (if it does not)
  ├── image_exploration.ipynb # Dataset analysis
 ```
 
-## Training the Models (Optional)
-If you want to **train the models from scratch**, use:
-```bash
-python scripts/train_ner.py
-python scripts/train_image.py
-```
-
 ## Dataset and Model Requirements
 
 ### For Pipeline Usage
