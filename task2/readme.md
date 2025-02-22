@@ -43,7 +43,7 @@ False (if it does not)
 
 ## Project Structure
 ```
-📂 task2/
+ task2/
  ├── README.md              # Project documentation
  ├── requirements.txt       # List of dependencies
  ├── scripts/               # Python scripts for training & inference
@@ -55,13 +55,6 @@ False (if it does not)
  ├── test_img1.jpg          # Example test image
  ├── downloading.ipynb      # Dataset & model preparation
  ├── image_exploration.ipynb # Dataset analysis
-```
-
-## Training the Models (Optional)
-If you want to **train the models from scratch**, use:
-```bash
-python scripts/train_ner.py
-python scripts/train_image.py
 ```
 
 ## Dataset and Model Requirements
@@ -168,9 +161,8 @@ If you choose to train the models from scratch:
 3. Training configurations can be modified in the respective script files
 
 ## Technical Details
-- NER Model: Transformer-based architecture optimized for entity recognition
-- Image Classification: Deep learning model with support for 10+ animal classes
-- Pipeline Integration: Efficient processing pipeline with minimal latency
+- NER Model: utilizes a BERT-based transformer model.
+- Image Classification: Uses a pre-trained ResNet50 model.
 
 Note: Pre-trained models are available for immediate use without training. 
 Refer to the download instructions in the Getting Started section.
