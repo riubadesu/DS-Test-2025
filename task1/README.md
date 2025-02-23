@@ -100,6 +100,3 @@ except Exception as e:
     print(f"Error Caught: {e}")
 ```
 
-## Contact
-
-For any questions or issues, reach out at **marchuk.liu@gmail.com**  
