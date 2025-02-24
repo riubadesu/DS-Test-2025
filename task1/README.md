@@ -1,102 +1,110 @@
-# MNIST Classification Project
+# MNIST Digit Classification Project
 
-This project implements three different machine learning models for handwritten digit recognition using the MNIST dataset.
+## Overview
+This project implements three different models to classify handwritten digits from the MNIST dataset following an object-oriented approach:
 
-## Project Overview
+- **Random Forest Classifier (RF)**
+- **Feed-Forward Neural Network (FFNN)**
+- **Convolutional Neural Network (CNN)**
 
-The following classifiers are trained and tested for accuracy and robustness:
-
-- **Random Forest (RF)** – A decision-tree-based machine learning model.
-- **Feed-Forward Neural Network (FFNN)** – A simple deep learning model using dense layers.
-- **Convolutional Neural Network (CNN)** – A deep learning model optimized for image classification.
-
-Each model is tested for accuracy, robustness, and edge case handling.
+All models follow a common interface pattern and are accessed through a unified `MnistClassifier` class, demonstrating proper OOP design principles.
 
 ## Project Structure
-
 ```
 task1/
-│── mnist_classification.ipynb    # Main Jupyter Notebook (combines all models)
-│── mnist_rf.ipynb                # Random Forest Implementation
-│── mnist_ffnn.ipynb              # Feed-Forward NN Implementation
-│── mnist_cnn.ipynb               # Convolutional NN Implementation
-│── requirements.txt               # Dependencies list for easy installation
-│── README.md                      # Project documentation (this file)
+├── README.md                 # Project documentation
+├── requirements.txt          # List of dependencies
+├── MnistClassifier.ipynb     # Jupyter notebook with implementation and demo
 ```
 
-## Installation
+## Solution Explanation
 
-### 1. Clone the Repository (If Using Git)
-```sh
-git clone https://github.com/riubadesu/DS-Test-2025.git
-cd mnist-classification/task1
-```
+The solution implements a design pattern that emphasizes object-oriented programming principles with:
 
-### 2. Install Dependencies
-```sh
+1. **Interface Definition**: `MnistClassifierInterface` abstract base class defines common methods all classifiers must implement:
+   - `train(X_train, y_train)`: For training models on input data
+   - `predict(X_test)`: For making predictions on new data
+
+2. **Model Implementations**:
+   - `RandomForestModel`: Uses scikit-learn's ensemble classifier
+   - `FFNNModel`: Implements a feed-forward neural network using TensorFlow/Keras
+   - `CNNModel`: Implements a convolutional neural network using TensorFlow/Keras
+
+3. **Factory Pattern**: `MnistClassifier` class provides a unified interface to all models through parameter selection:
+   ```python
+   # Initialize any model using the same interface
+   rf_model = MnistClassifier(algorithm='rf')  # Random Forest
+   nn_model = MnistClassifier(algorithm='nn')  # Neural Network
+   cnn_model = MnistClassifier(algorithm='cnn')  # CNN
+   
+   # Train and predict using identical methods
+   rf_model.train(X_train, y_train)
+   predictions = rf_model.predict(X_test)
+   ```
+
+## Model Architectures
+
+### Random Forest
+- Flattens 28x28 images into 784-dimensional vectors
+- Uses 100 decision trees
+- Optimized for MNIST classification
+
+### Feed-Forward Neural Network
+Architecture:
+- Input layer (784 neurons)
+- Hidden layer (128 neurons, ReLU)
+- Dropout (0.2)
+- Hidden layer (64 neurons, ReLU)
+- Dropout (0.2)
+- Output layer (10 neurons, softmax)
+
+### Convolutional Neural Network
+Architecture:
+- Input layer (28×28×1)
+- Conv2D (32 filters, 3×3) + ReLU
+- MaxPooling (2×2)
+- Conv2D (64 filters, 3×3) + ReLU
+- MaxPooling (2×2)
+- Flatten
+- Dense (64 neurons, ReLU)
+- Dropout (0.2)
+- Output (10 neurons, softmax)
+
+## Setting Up the Project
+
+### Requirements
+The project requires the following libraries:
+- numpy
+- tensorflow
+- scikit-learn
+- matplotlib
+- seaborn
+
+Install dependencies using:
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Launch Jupyter Notebook
-```sh
-jupyter lab
-```
-Then open **`mnist_classification.ipynb`** to run the code step by step.
-
-This project is **cross-platform** and runs on:
-- Windows (via Command Prompt, PowerShell, WSL, or Git Bash)
-- Linux (Ubuntu, Debian, Fedora, etc.)
-- macOS (Intel and M1/M2 chips)
-
-## Usage
-
-The `MnistClassifier` wrapper allows switching between different models.
-
-### Example: Train and Predict Using CNN
-```python
-from mnist_classification import MnistClassifier
-
-# Choose a model ('rf' for Random Forest, 'nn' for FFNN, 'cnn' for CNN)
-clf = MnistClassifier(algorithm='cnn')
-
-# Train the model
-clf.train(X_train, y_train)
-
-# Make predictions
-predictions = clf.predict(X_test)
-print(predictions[:10])  # Show first 10 predictions
+### Running the Notebook
+Open and run the Jupyter notebook to see the models in action:
+```bash
+jupyter notebook MnistClassifier.ipynb
 ```
 
-## Model Performance
+## Performance Analysis
+The models were evaluated on the MNIST test dataset (10,000 images):
 
-Each model is trained and tested in **`mnist_classification.ipynb`**.  
-Here are the expected accuracy results for the MNIST dataset:
-
-| Model  | Expected Accuracy |
-|--------|------------------|
-| Random Forest (RF) | ~92% |
-| Feed-Forward Neural Network (FFNN) | ~97% |
-| Convolutional Neural Network (CNN) | ~98% |
+| Model | Accuracy | Training Time |
+|-------|----------|---------------|
+| Random Forest | 97.04% | ~54 seconds |
+| FFNN | 97.56% | ~15 seconds |
+| CNN | 99.07% | ~49 seconds |
 
 ## Edge Case Handling
+The implementation includes robust error handling for:
+- Invalid data types
+- Empty datasets
+- Incorrect input shapes
+- Invalid algorithm names
 
-To ensure the models handle unexpected inputs properly, the following cases were tested:
-
-| **Edge Case** | **Expected Behavior** | **Status** |
-|--------------|------------------|---------|
-| Invalid Data Type (e.g., string input) | Should raise an error | Passed |
-| Empty Data | Should raise an error | Passed |
-| Wrong Input Shape (CNN requires 28×28 images) | Should raise an error | Passed |
-| NaN Values in Training Data | Should raise an error | Passed |
-| Invalid Labels (non-numeric) | Should raise an error | Passed |
-| Batch Size of 1 (Minimal Input) | Model should train | Passed |
-
-### Example: Handling Invalid Inputs
-```python
-try:
-    clf = MnistClassifier(algorithm='rf')
-    clf.train("invalid_data", "invalid_labels")  # Should raise an error
-except Exception as e:
-    print(f"Error Caught: {e}")
-```
-
+These cases are tested in the notebook to ensure the models behave appropriately when presented with unexpected inputs.
